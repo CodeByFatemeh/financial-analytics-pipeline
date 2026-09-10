@@ -1,0 +1,78 @@
+Total Applications =
+COUNTROWS(
+    FactApplication
+)
+
+
+Approved Applications =
+CALCULATE(
+    [Total Applications],
+    FactApplication[approved_flag] = 1
+)
+
+
+Approval Rate =
+DIVIDE(
+    [Approved Applications],
+    [Total Applications]
+)
+
+
+Total Transactions =
+COUNTROWS(
+    FactTransaction
+)
+
+
+Fraudulent Transactions =
+CALCULATE(
+    [Total Transactions],
+    FactTransaction[fraudulent_flag] = 1
+)
+
+
+Fraud Transaction Rate =
+DIVIDE(
+    [Fraudulent Transactions],
+    [Total Transactions]
+)
+
+
+Transactions with Prior Device Fraud Context =
+CALCULATE(
+    [Total Transactions],
+    FactTransaction[device_has_prior_fraud_flag] = 1
+)
+
+
+Fraud Transactions with Prior Device Fraud =
+CALCULATE(
+    [Fraudulent Transactions],
+    FactTransaction[device_has_prior_fraud_flag] = 1
+)
+
+
+Fraud Rate with Prior Device Fraud =
+DIVIDE(
+    [Fraud Transactions with Prior Device Fraud],
+    [Transactions with Prior Device Fraud Context]
+)
+
+
+Prior Device Fraud Lift =
+VAR ContextFraudRate =
+    [Fraud Rate with Prior Device Fraud]
+
+VAR BaselineFraudRate =
+    CALCULATE(
+        [Fraud Transaction Rate],
+        REMOVEFILTERS(
+            FactTransaction[device_has_prior_fraud_flag]
+        )
+    )
+
+RETURN
+    DIVIDE(
+        ContextFraudRate,
+        BaselineFraudRate
+    )

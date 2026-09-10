@@ -1,0 +1,29 @@
+# Environment
+.env
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated datasets
+data/generated/*.csv
+
+# Power BI files containing embedded data
+*.pbix
+*.pbit
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
